@@ -1,42 +1,38 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ErrorResponse = exports.SuccessResponse = void 0;
-const formatResponse = (statusCode, message, data) => {
+var formatResponse = function (statusCode, message, data) {
     if (data) {
         return {
-            statusCode,
+            statusCode: statusCode,
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
             body: JSON.stringify({
-                message,
-                data,
+                message: message,
+                data: data,
             }),
         };
     }
     else {
         return {
-            statusCode,
+            statusCode: statusCode,
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
             body: JSON.stringify({
-                message,
+                message: message,
             }),
         };
     }
 };
-const SuccessResponse = (data) => {
+exports.SuccessResponse = function (data) {
     return formatResponse(200, "success", data);
 };
-exports.SuccessResponse = SuccessResponse;
-const ErrorResponse = (code = 1000, error) => {
+exports.ErrorResponse = function (code, error) {
+    if (code === void 0) { code = 1000; }
     if (Array.isArray(error)) {
-        const errorObject = error[0].constraints;
-        const errorMessage = errorObject[Object.keys(errorObject)[0]] || "Error Occured";
+        var errorObject = error[0].constraints;
+        var errorMessage = errorObject[Object.keys(errorObject)[0]] || "Error Occurred";
         return formatResponse(code, errorMessage, errorMessage);
     }
-    return formatResponse(code, `${error}`, error);
+    return formatResponse(code, "".concat(error), error);
 };
-exports.ErrorResponse = ErrorResponse;
 //# sourceMappingURL=response.js.map

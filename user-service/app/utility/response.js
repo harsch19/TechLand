@@ -1,44 +1,38 @@
-const formatResponse = (statusCode:number, message:string, data:unknown) => {
+const formatResponse = (statusCode, message, data) => {
     if (data) {
-        return{
+        return {
             statusCode,
             headers: {
                 "Access-Control-Allow-Origin": "*",
-    
             },
             body: JSON.stringify({
                 message,
                 data,
             }),
-    
         };
-    }
-
-    else {
-        return{
+    } else {
+        return {
             statusCode,
             headers: {
                 "Access-Control-Allow-Origin": "*",
-    
             },
             body: JSON.stringify({
                 message,
             }),
-    
         };
     }
-}
+};
 
-export const SuccessResponse = (data: object) => {
+exports.SuccessResponse = (data) => {
     return formatResponse(200, "success", data);
-}
+};
 
-export const ErrorResponse = (code=1000, error: unknown) => {
+exports.ErrorResponse = (code = 1000, error) => {
     if (Array.isArray(error)) {
         const errorObject = error[0].constraints;
-        const errorMessage = errorObject[Object.keys(errorObject)[0]] || "Error Occured";
-        return formatResponse(code, errorMessage, errorMessage)
+        const errorMessage = errorObject[Object.keys(errorObject)[0]] || "Error Occurred";
+        return formatResponse(code, errorMessage, errorMessage);
     }
 
     return formatResponse(code, `${error}`, error);
-}
+};
